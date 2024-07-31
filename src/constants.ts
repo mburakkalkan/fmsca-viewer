@@ -1,8 +1,9 @@
 import { GridColDef } from "@mui/x-data-grid";
+import { Moment } from "moment";
 
 export interface Record {
-  created_dt?: string;
-  data_source_modified_dt?: string;
+  created_dt?: Moment|string;
+  data_source_modified_dt?: Moment|string;
   entity_type?: string;
   operating_status?: string;
   legal_name?: string;
@@ -20,12 +21,12 @@ export interface Record {
   m_zip_code?: string;
   usdot_number?: string;
   mc_mx_ff_number?: string;
-  power_units?: string;
-  mcs_150_form_date?: string;
-  out_of_service_date?: string;
+  power_units?: string|number;
+  mcs_150_form_date?: Moment|string;
+  out_of_service_date?: Moment|string;
   state_carrier_id_number?: string;
   duns_number?: string;
-  drivers?: string;
+  drivers?: string|number;
   mcs_150_mileage_year?: string;
   id?: string;
   credit_score?: string;
@@ -64,23 +65,71 @@ export const columnLabels: { [key: string]: string } = {
   record_status: "Record Status"
 };
 
-export const columns: GridColDef[] = Object.keys(columnLabels).map(c => ({
-  field: c,
-  headerName: columnLabels[c],
-  flex: 1
-}));
-
-export const visibleColumns = [
-  "created_dt",
-  "data_source_modified_dt",
-  "entity_type",
-  "operating_status",
-  "legal_name",
-  "dba_name",
-  "physical_address",
-  "phone",
-  "usdot_number",
-  "mc_mx_ff_number",
-  "power_units",
-  "out_of_service_date"
+export const usingColumns: GridColDef<Record>[] = [
+  {
+    field: "created_dt",
+    headerName: columnLabels["created_dt"],
+    flex: 1,
+    valueFormatter: (value: Moment|string) => value === "" ? "" : (value as Moment).format("MM/DD/YYYY HH:mm:ss"),
+    sortComparator: (a, b) => a.diff?.(b) ?? 0
+  },
+  {
+    field: "data_source_modified_dt",
+    headerName: columnLabels["data_source_modified_dt"],
+    flex: 1,
+    valueFormatter: (value: Moment|string) => value === "" ? "" : (value as Moment).format("MM/DD/YYYY HH:mm:ss"),
+    sortComparator: (a, b) => a.diff?.(b) ?? 0
+  },
+  {
+    field: "entity_type",
+    headerName: columnLabels["entity_type"],
+    flex: 1
+  },
+  {
+    field: "operating_status",
+    headerName: columnLabels["operating_status"],
+    flex: 1
+  },
+  {
+    field: "legal_name",
+    headerName: columnLabels["legal_name"],
+    flex: 1
+  },
+  {
+    field: "dba_name",
+    headerName: columnLabels["dba_name"],
+    flex: 1
+  },
+  {
+    field: "physical_address",
+    headerName: columnLabels["physical_address"],
+    flex: 1
+  },
+  {
+    field: "phone",
+    headerName: columnLabels["phone"],
+    flex: 1
+  },
+  {
+    field: "usdot_number",
+    headerName: columnLabels["usdot_number"],
+    flex: 1
+  },
+  {
+    field: "mc_mx_ff_number",
+    headerName: columnLabels["mc_mx_ff_number"],
+    flex: 1
+  },
+  {
+    field: "power_units",
+    headerName: columnLabels["power_units"],
+    flex: 1
+  },
+  {
+    field: "out_of_service_date",
+    headerName: columnLabels["out_of_service_date"],
+    flex: 1,
+    valueFormatter: (value: Moment|string) => value === "" ? "" : (value as Moment).format("MM/DD/YYYY"),
+    sortComparator: (a, b) => a.diff?.(b) ?? 0
+  }
 ];
